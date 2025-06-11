@@ -44,6 +44,15 @@
                 }
             </style>
 
+            <style>.smile-hover:hover {
+                animation: smile-spin 0.6s linear;
+                }
+                @keyframes smile-spin {
+                from { transform: rotate(0deg);}
+                to { transform: rotate(360deg);}
+                }
+            </style>
+
             <script>
                 L_NO_TOUCH = false;
                 L_DISABLE_3D = false;
@@ -52,15 +61,30 @@
         
 </head>
 <body>
-    
-    
+            <div style="text-align: center; font-size: 20px; font-weight: bold; margin: 3px 0;">
+        😀😀😀家探しだぜい😀😀😀（クリックすると詳しい情報だよ）</div>
             <div class="folium-map" id="map_769dc0da0fbf93b89c1b503450fee286" ></div>
-        
+
+function saveMemo(key) {
+  var value = document.getElementById('memo_' + key).value;
+  localStorage.setItem('memo_' + key, value);
+  alert("メモを保存しました！");
+}
+
+// ポップアップが開かれた時に、localStorageから復元
+map_769dc0da0fbf93b89c1b503450fee286.on('popupopen', function(e) {
+  var marker = e.popup._source;
+  var latlng = marker.getLatLng();
+  var key = latlng.lat + ',' + latlng.lng;
+  var textarea = document.getElementById('memo_' + key);
+  if (textarea) {
+    textarea.value = localStorage.getItem('memo_' + key) || "";
+  }
+});
+
 </body>
 <script>
-    
-    
-            var map_769dc0da0fbf93b89c1b503450fee286 = L.map(
+ var map_769dc0da0fbf93b89c1b503450fee286 = L.map(
                 "map_769dc0da0fbf93b89c1b503450fee286",
                 {
                     center: [35.68, 139.75],
@@ -74,9 +98,10 @@
                 }
             );
 
-            
-
-        
+<!-- 任意の地点を追加 -->
+map_769dc0da0fbf93b89c1b503450fee286.on('click', function(e) {
+    L.marker([e.latlng.lat, e.latlng.lng]).addTo(map_769dc0da0fbf93b89c1b503450fee286);
+});
     
             var tile_layer_75648e3258f6244b750578bb81b79707 = L.tileLayer(
                 "http://mt1.google.com/vt/lyrs=m\u0026x={x}\u0026y={y}\u0026z={z}",
@@ -108,10 +133,10 @@
             var icon_cd189d980464b4e18f54dd3e250170be = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "train",
+  "iconColor": "black",
+  "icon": "smile",
   "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
+  "extraClasses": "fa-rotate-0 smile-hover smile-hover",
 }
             );
         
@@ -122,16 +147,25 @@
 
         
             
-                var html_d41875a02499bf5a706f88777a7a42df = $(`<div id="html_d41875a02499bf5a706f88777a7a42df" style="width: 100.0%; height: 100.0%;">     <b>中十条駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約29分（埼京線→京浜東北線）</td></tr>         <tr><td>自然の豊かさ</td><td>都市公園少なめ</td></tr>         <tr><td>静かさ／人口密集度</td><td>密集住宅地・静かな裏道多い</td></tr>         <tr><td>1LDK賃料相場</td><td>約9–11万円</td></tr>         <tr><td>貸農園の有無</td><td>なし（郊外型）</td></tr>     </table>     </div>`)[0];
+                var html_d41875a02499bf5a706f88777a7a42df = $(`<div id="html_d41875a02499bf5a706f88777a7a42df" style="width: 100.0%; height: 100.0%;">
+                     <b>中十条駅</b><br>     <table style="font-size:12px;">         
+                     <tr><td>新橋駅まで最短所要時間</td><td>約29分（埼京線→京浜東北線）</td></tr>
+                              <tr><td>自然の豊かさ</td><td>都市公園少なめ</td></tr>
+                                       <tr><td>静かさ／人口密集度</td><td>密集住宅地・静かな裏道多い</td></tr>
+                                                <tr><td>1LDK賃料相場</td><td>約9–11万円</td></tr>
+                                                         <tr><td>貸農園の有無</td><td>なし（郊外型）</td></tr>
+                                                              </table><div>
+                    <label>メモ:</label>
+                    <textarea id="userInput_1" rows="2" cols="40" placeholder="ここにメモれるぜい"></textarea>
+                    <br>
+                    <button onclick="alert(document.getElementById('userInput_1').value)">保存するかい？</button>
+                    </div>     </div>`)[0];
                 popup_369765f5aea5870dd352f7047bca40fb.setContent(html_d41875a02499bf5a706f88777a7a42df);
             
         
 
         marker_948bab2fdc9253f41cf112fa16dadeee.bindPopup(popup_369765f5aea5870dd352f7047bca40fb)
         ;
-
-        
-    
     
                 marker_948bab2fdc9253f41cf112fa16dadeee.setIcon(icon_cd189d980464b4e18f54dd3e250170be);
             
@@ -144,12 +178,10 @@
         
     
             var div_icon_f6ca67dae8d146c6ab269526c3926486 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size: 12px; color: white; text-shadow: 1px 1px 2px black;\"\u003e\u4e2d\u5341\u6761\u99c5\u003c/div\u003e",
+  "html": "\u003cdiv style=\"font-size: 12px; color: green; writing-mode: vertial-tb;\"\u003e\u4e2d\u5341\u6761\u99c5\u003c/div\u003e",
   "className": "empty",
 });
-        
-    
-                marker_e1850fdb8fa7ec46c80928ed11c32255.setIcon(div_icon_f6ca67dae8d146c6ab269526c3926486);
+        marker_e1850fdb8fa7ec46c80928ed11c32255.setIcon(div_icon_f6ca67dae8d146c6ab269526c3926486);
             
     
             var marker_df8ce0aafc7b1d0c2107fdbdee025e16 = L.marker(
@@ -163,9 +195,9 @@
                 {
   "markerColor": "blue",
   "iconColor": "white",
-  "icon": "train",
+  "icon": "smile",
   "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
+  "extraClasses": "fa-rotate-0 smile-hover",
 }
             );
         
@@ -176,7 +208,12 @@
 
         
             
-                var html_319b7b4142af8841b9e769670e790c9d = $(`<div id="html_319b7b4142af8841b9e769670e790c9d" style="width: 100.0%; height: 100.0%;">     <b>十条駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約30分（埼京線→京浜東北線）</td></tr>         <tr><td>自然の豊かさ</td><td>小規模公園のみ</td></tr>         <tr><td>静かさ／人口密集度</td><td>商店街賑やか・住宅密集</td></tr>         <tr><td>1LDK賃料相場</td><td>約10–12万円</td></tr>         <tr><td>貸農園の有無</td><td>なし</td></tr>     </table>     </div>`)[0];
+                var html_319b7b4142af8841b9e769670e790c9d = $(`<div id="html_319b7b4142af8841b9e769670e790c9d" style="width: 100.0%; height: 100.0%;">     <b>十条駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約30分（埼京線→京浜東北線）</td></tr>         <tr><td>自然の豊かさ</td><td>小規模公園のみ</td></tr>         <tr><td>静かさ／人口密集度</td><td>商店街賑やか・住宅密集</td></tr>         <tr><td>1LDK賃料相場</td><td>約10–12万円</td></tr>         <tr><td>貸農園の有無</td><td>なし</td></tr>     </table><div>
+                    <label>メモ:</label>
+                    <textarea id="userInput_1" rows="2" cols="40" placeholder="ここにメモれるぜい"></textarea>
+                    <br>
+                    <button onclick="alert(document.getElementById('userInput_1').value)">保存するかい？</button>
+                    </div>      </div>`)[0];
                 popup_3444e2cab6188961aa6739d33e8783e7.setContent(html_319b7b4142af8841b9e769670e790c9d);
             
         
@@ -198,7 +235,7 @@
         
     
             var div_icon_c4c0f51c2d882b83584b81419e72720b = L.divIcon({
-  "html": "\u003cdiv style=\"font-size: 12px; color: white; text-shadow: 1px 1px 2px black;\"\u003e\u5341\u6761\u99c5\u003c/div\u003e",
+  "html": "\u003cdiv style=\"font-size: 12px; color: green; writing-mode: horizontal-tb;\"\u003e\u5341\u6761\u99c5\u003c/div\u003e",
   "className": "empty",
 });
         
@@ -216,10 +253,10 @@
             var icon_e34f5b86be59553589ffbb7033eb9fc8 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "train",
+  "iconColor": "black",
+  "icon": "smile",
   "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
+  "extraClasses": "fa-rotate-0 smile-hover",
 }
             );
         
@@ -230,7 +267,12 @@
 
         
             
-                var html_38dc17b8b6e3876f52cce06524ce30fc = $(`<div id="html_38dc17b8b6e3876f52cce06524ce30fc" style="width: 100.0%; height: 100.0%;">     <b>市川駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約24分〜27分（総武快速直通）</td></tr>         <tr><td>自然の豊かさ</td><td>江戸川沿い緑地多数</td></tr>         <tr><td>静かさ／人口密集度</td><td>中密度・住宅街主体</td></tr>         <tr><td>1LDK賃料相場</td><td>約9.5–12万円</td></tr>         <tr><td>貸農園の有無</td><td>有り（市民農園多数）</td></tr>     </table>     </div>`)[0];
+                var html_38dc17b8b6e3876f52cce06524ce30fc = $(`<div id="html_38dc17b8b6e3876f52cce06524ce30fc" style="width: 100.0%; height: 100.0%;">     <b>市川駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約24分〜27分（総武快速直通）</td></tr>         <tr><td>自然の豊かさ</td><td>江戸川沿い緑地多数</td></tr>         <tr><td>静かさ／人口密集度</td><td>中密度・住宅街主体</td></tr>         <tr><td>1LDK賃料相場</td><td>約9.5–12万円</td></tr>         <tr><td>貸農園の有無</td><td>有り（市民農園多数）</td></tr>     </table> <div>
+                    <label>メモ:</label>
+                    <textarea id="userInput_1" rows="2" cols="40" placeholder="ここにメモれるぜい"></textarea>
+                    <br>
+                    <button onclick="alert(document.getElementById('userInput_1').value)">保存するかい？</button>
+                    </div>     </div>`)[0];
                 popup_ae0cfc8a5be3a0689b9916b66b47e2b7.setContent(html_38dc17b8b6e3876f52cce06524ce30fc);
             
         
@@ -252,7 +294,7 @@
         
     
             var div_icon_ec35115dacbcdc64407384111bfd38b6 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size: 12px; color: white; text-shadow: 1px 1px 2px black;\"\u003e\u5e02\u5ddd\u99c5\u003c/div\u003e",
+  "html": "\u003cdiv style=\"font-size: 12px; color: green; writing-mode: horizontal-tb;\"\u003e\u5e02\u5ddd\u99c5\u003c/div\u003e",
   "className": "empty",
 });
         
@@ -270,10 +312,10 @@
             var icon_aefd37574162a823d3f3c25999390b87 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "train",
+  "iconColor": "black",
+  "icon": "smile",
   "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
+  "extraClasses": "fa-rotate-0 smile-hover",
 }
             );
         
@@ -284,7 +326,12 @@
 
         
             
-                var html_51f8aaf6428ad831bfde4abf14544cfb = $(`<div id="html_51f8aaf6428ad831bfde4abf14544cfb" style="width: 100.0%; height: 100.0%;">     <b>京成高砂駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約27分〜30分（直通アクセス特急）</td></tr>         <tr><td>自然の豊かさ</td><td>江戸川近くだが緑少なめ</td></tr>         <tr><td>静かさ／人口密集度</td><td>密集＆商業地混在</td></tr>         <tr><td>1LDK賃料相場</td><td>約8.5–11万円</td></tr>         <tr><td>貸農園の有無</td><td>一部あり（葛飾区農園）</td></tr>     </table>     </div>`)[0];
+                var html_51f8aaf6428ad831bfde4abf14544cfb = $(`<div id="html_51f8aaf6428ad831bfde4abf14544cfb" style="width: 100.0%; height: 100.0%;">     <b>京成高砂駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約27分〜30分（直通アクセス特急）</td></tr>         <tr><td>自然の豊かさ</td><td>江戸川近くだが緑少なめ</td></tr>         <tr><td>静かさ／人口密集度</td><td>密集＆商業地混在</td></tr>         <tr><td>1LDK賃料相場</td><td>約8.5–11万円</td></tr>         <tr><td>貸農園の有無</td><td>一部あり（葛飾区農園）</td></tr>     </table>  <div>
+                    <label>メモ:</label>
+                    <textarea id="userInput_1" rows="2" cols="40" placeholder="ここにメモれるぜい"></textarea>
+                    <br>
+                    <button onclick="alert(document.getElementById('userInput_1').value)">保存するかい？</button>
+                    </div>    </div>`)[0];
                 popup_75a7f7da87f123940dd38dc169174fbc.setContent(html_51f8aaf6428ad831bfde4abf14544cfb);
             
         
@@ -306,7 +353,7 @@
         
     
             var div_icon_49ca9840f10e6bb1edf81cc3691f5382 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size: 12px; color: white; text-shadow: 1px 1px 2px black;\"\u003e\u4eac\u6210\u9ad8\u7802\u99c5\u003c/div\u003e",
+  "html": "\u003cdiv style=\"font-size: 12px; color: green; writing-mode: horizontal-tb;\"\u003e\u4eac\u6210\u9ad8\u7802\u99c5\u003c/div\u003e",
   "className": "empty",
 });
         
@@ -324,10 +371,10 @@
             var icon_87572fe4d66f883cd871f9d79cfd57cb = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "train",
+  "iconColor": "black",
+  "icon": "smile",
   "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
+  "extraClasses": "fa-rotate-0 smile-hover",
 }
             );
         
@@ -338,7 +385,12 @@
 
         
             
-                var html_e63bb1dd1eb6d413fb1f57d3daebcd76 = $(`<div id="html_e63bb1dd1eb6d413fb1f57d3daebcd76" style="width: 100.0%; height: 100.0%;">     <b>武蔵小杉駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約14分（横須賀線直通）</td></tr>         <tr><td>自然の豊かさ</td><td>多摩川・緑地ある</td></tr>         <tr><td>静かさ／人口密集度</td><td>超高層マンション密集</td></tr>         <tr><td>1LDK賃料相場</td><td>約14–17万円</td></tr>         <tr><td>貸農園の有無</td><td>なし（市街地）</td></tr>     </table>     </div>`)[0];
+                var html_e63bb1dd1eb6d413fb1f57d3daebcd76 = $(`<div id="html_e63bb1dd1eb6d413fb1f57d3daebcd76" style="width: 100.0%; height: 100.0%;">     <b>武蔵小杉駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約14分（横須賀線直通）</td></tr>         <tr><td>自然の豊かさ</td><td>多摩川・緑地ある</td></tr>         <tr><td>静かさ／人口密集度</td><td>超高層マンション密集</td></tr>         <tr><td>1LDK賃料相場</td><td>約14–17万円</td></tr>         <tr><td>貸農園の有無</td><td>なし（市街地）</td></tr>     </table>  <div>
+                    <label>メモ:</label>
+                    <textarea id="userInput_1" rows="2" cols="40" placeholder="ここにメモれるぜい"></textarea>
+                    <br>
+                    <button onclick="alert(document.getElementById('userInput_1').value)">保存するかい？</button>
+                    </div>    </div>`)[0];
                 popup_9a77062ae4fe3ee6eb48ffa8439caaff.setContent(html_e63bb1dd1eb6d413fb1f57d3daebcd76);
             
         
@@ -360,7 +412,7 @@
         
     
             var div_icon_4661bd06a6d94b8f95fd8827d3cb4cdc = L.divIcon({
-  "html": "\u003cdiv style=\"font-size: 12px; color: white; text-shadow: 1px 1px 2px black;\"\u003e\u6b66\u8535\u5c0f\u6749\u99c5\u003c/div\u003e",
+  "html": "\u003cdiv style=\"font-size: 12px; color: green; writing-mode: horizontal-tb;\"\u003e\u6b66\u8535\u5c0f\u6749\u99c5\u003c/div\u003e",
   "className": "empty",
 });
         
@@ -378,10 +430,10 @@
             var icon_364ea2a43f4fc0fac85af9d959957649 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "train",
+  "iconColor": "black",
+  "icon": "smile",
   "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
+  "extraClasses": "fa-rotate-0 smile-hover",
 }
             );
         
@@ -392,7 +444,12 @@
 
         
             
-                var html_698065a99a0a076960d70425f556e462 = $(`<div id="html_698065a99a0a076960d70425f556e462" style="width: 100.0%; height: 100.0%;">     <b>武蔵中原駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約25〜28分（南武線→横須賀線）</td></tr>         <tr><td>自然の豊かさ</td><td>緑地は小規模</td></tr>         <tr><td>静かさ／人口密集度</td><td>マンション中心・やや密集</td></tr>         <tr><td>1LDK賃料相場</td><td>約12–15万円</td></tr>         <tr><td>貸農園の有無</td><td>なし</td></tr>     </table>     </div>`)[0];
+                var html_698065a99a0a076960d70425f556e462 = $(`<div id="html_698065a99a0a076960d70425f556e462" style="width: 100.0%; height: 100.0%;">     <b>武蔵中原駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約25〜28分（南武線→横須賀線）</td></tr>         <tr><td>自然の豊かさ</td><td>緑地は小規模</td></tr>         <tr><td>静かさ／人口密集度</td><td>マンション中心・やや密集</td></tr>         <tr><td>1LDK賃料相場</td><td>約12–15万円</td></tr>         <tr><td>貸農園の有無</td><td>なし</td></tr>     </table> <div>
+                    <label>メモ:</label>
+                    <textarea id="userInput_1" rows="2" cols="40" placeholder="ここにメモれるぜい"></textarea>
+                    <br>
+                    <button onclick="alert(document.getElementById('userInput_1').value)">保存するかい？</button>
+                    </div>     </div>`)[0];
                 popup_cc69231434bc2d98e5b7ccccb4cdc6fb.setContent(html_698065a99a0a076960d70425f556e462);
             
         
@@ -414,7 +471,7 @@
         
     
             var div_icon_bbdec58c655ae9cd8694bf0eb9b1eb15 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size: 12px; color: white; text-shadow: 1px 1px 2px black;\"\u003e\u6b66\u8535\u4e2d\u539f\u99c5\u003c/div\u003e",
+  "html": "\u003cdiv style=\"font-size: 12px; color: green;  writing-mode: horizontal-tb;\"\u003e\u6b66\u8535\u4e2d\u539f\u99c5\u003c/div\u003e",
   "className": "empty",
 });
         
@@ -432,10 +489,10 @@
             var icon_8f5dd2b00652a5c94c951ec53fc7b2b1 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "train",
+  "iconColor": "black",
+  "icon": "smile",
   "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
+  "extraClasses": "fa-rotate-0 smile-hover",
 }
             );
         
@@ -446,7 +503,12 @@
 
         
             
-                var html_326fb0c3921db06cebe7204fe74a4b96 = $(`<div id="html_326fb0c3921db06cebe7204fe74a4b96" style="width: 100.0%; height: 100.0%;">     <b>松戸駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約27分（常磐線直通）</td></tr>         <tr><td>自然の豊かさ</td><td>江戸川・21世紀の森など</td></tr>         <tr><td>静かさ／人口密集度</td><td>広めの住宅街・中密度</td></tr>         <tr><td>1LDK賃料相場</td><td>約7–11万円</td></tr>         <tr><td>貸農園の有無</td><td>有り（市民農園）</td></tr>     </table>     </div>`)[0];
+                var html_326fb0c3921db06cebe7204fe74a4b96 = $(`<div id="html_326fb0c3921db06cebe7204fe74a4b96" style="width: 100.0%; height: 100.0%;">     <b>松戸駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約27分（常磐線直通）</td></tr>         <tr><td>自然の豊かさ</td><td>江戸川・21世紀の森など</td></tr>         <tr><td>静かさ／人口密集度</td><td>広めの住宅街・中密度</td></tr>         <tr><td>1LDK賃料相場</td><td>約7–11万円</td></tr>         <tr><td>貸農園の有無</td><td>有り（市民農園）</td></tr>     </table>  <div>
+                    <label>メモ:</label>
+                    <textarea id="userInput_1" rows="2" cols="40" placeholder="ここにメモれるぜい"></textarea>
+                    <br>
+                    <button onclick="alert(document.getElementById('userInput_1').value)">保存するかい？</button>
+                    </div>    </div>`)[0];
                 popup_54e92036209c097278dab14f6570ef0c.setContent(html_326fb0c3921db06cebe7204fe74a4b96);
             
         
@@ -468,7 +530,7 @@
         
     
             var div_icon_860f0726a205fc7faf77aee0a5db3f30 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size: 12px; color: white; text-shadow: 1px 1px 2px black;\"\u003e\u677e\u6238\u99c5\u003c/div\u003e",
+  "html": "\u003cdiv style=\"font-size: 12px; color: green; writing-mode: horizontal-tb;\"\u003e\u677e\u6238\u99c5\u003c/div\u003e",
   "className": "empty",
 });
         
@@ -486,10 +548,10 @@
             var icon_f8f68c0c264148fb6a5fd05f3c49c240 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "train",
+  "iconColor": "black",
+  "icon": "smile",
   "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
+  "extraClasses": "fa-rotate-0 smile-hover",
 }
             );
         
@@ -500,7 +562,12 @@
 
         
             
-                var html_5c5c846731d5c1b840a31083cade4902 = $(`<div id="html_5c5c846731d5c1b840a31083cade4902" style="width: 100.0%; height: 100.0%;">     <b>津田沼駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約32〜34分（総武快速→横須賀線）</td></tr>         <tr><td>自然の豊かさ</td><td>谷津干潟・緑地多い</td></tr>         <tr><td>静かさ／人口密集度</td><td>商業・住宅バランス良好</td></tr>         <tr><td>1LDK賃料相場</td><td>約7–10万円</td></tr>         <tr><td>貸農園の有無</td><td>有り（市民農園多め）</td></tr>     </table>     </div>`)[0];
+                var html_5c5c846731d5c1b840a31083cade4902 = $(`<div id="html_5c5c846731d5c1b840a31083cade4902" style="width: 100.0%; height: 100.0%;">     <b>津田沼駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約32〜34分（総武快速→横須賀線）</td></tr>         <tr><td>自然の豊かさ</td><td>谷津干潟・緑地多い</td></tr>         <tr><td>静かさ／人口密集度</td><td>商業・住宅バランス良好</td></tr>         <tr><td>1LDK賃料相場</td><td>約7–10万円</td></tr>         <tr><td>貸農園の有無</td><td>有り（市民農園多め）</td></tr>     </table>  <div>
+                    <label>メモ:</label>
+                    <textarea id="userInput_1" rows="2" cols="40" placeholder="ここにメモれるぜい"></textarea>
+                    <br>
+                    <button onclick="alert(document.getElementById('userInput_1').value)">保存するかい？</button>
+                    </div>    </div>`)[0];
                 popup_ea963da48b34a86fd999d84f3b6a0307.setContent(html_5c5c846731d5c1b840a31083cade4902);
             
         
@@ -522,7 +589,7 @@
         
     
             var div_icon_435289e94505c48c4ae3f2996b8b1514 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size: 12px; color: white; text-shadow: 1px 1px 2px black;\"\u003e\u6d25\u7530\u6cbc\u99c5\u003c/div\u003e",
+  "html": "\u003cdiv style=\"font-size: 12px; color: green; writing-mode: horizontal-tb;\"\u003e\u6d25\u7530\u6cbc\u99c5\u003c/div\u003e",
   "className": "empty",
 });
         
@@ -540,10 +607,10 @@
             var icon_20272d5e6cb0dc0e2f3c221bf389b4fb = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "train",
+  "iconColor": "black",
+  "icon": "smile",
   "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
+  "extraClasses": "fa-rotate-0 smile-hover",
 }
             );
         
@@ -554,7 +621,12 @@
 
         
             
-                var html_9675133a10944452f66ea39236d40a99 = $(`<div id="html_9675133a10944452f66ea39236d40a99" style="width: 100.0%; height: 100.0%;">     <b>久が原駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約34分_新橋</td></tr>         <tr><td>自然の豊かさ</td><td>（未記入）</td></tr>         <tr><td>静かさ／人口密集度</td><td>（未記入）</td></tr>         <tr><td>1LDK賃料相場</td><td>（未記入）</td></tr>         <tr><td>貸農園の有無</td><td>（未記入）</td></tr>     </table>     </div>`)[0];
+                var html_9675133a10944452f66ea39236d40a99 = $(`<div id="html_9675133a10944452f66ea39236d40a99" style="width: 100.0%; height: 100.0%;">     <b>久が原駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約34分_新橋</td></tr>         <tr><td>自然の豊かさ</td><td>（未記入）</td></tr>         <tr><td>静かさ／人口密集度</td><td>（未記入）</td></tr>         <tr><td>1LDK賃料相場</td><td>（未記入）</td></tr>         <tr><td>貸農園の有無</td><td>（未記入）</td></tr>     </table>  <div>
+                    <label>メモ:</label>
+                    <textarea id="userInput_1" rows="2" cols="40" placeholder="ここにメモれるぜい"></textarea>
+                    <br>
+                    <button onclick="alert(document.getElementById('userInput_1').value)">保存するかい？</button>
+                    </div>    </div>`)[0];
                 popup_5e8caf6dcfbce127a1cb3223b93aca6b.setContent(html_9675133a10944452f66ea39236d40a99);
             
         
@@ -576,7 +648,7 @@
         
     
             var div_icon_da7b66951d6c0775a2e7d0d70788f0e7 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size: 12px; color: white; text-shadow: 1px 1px 2px black;\"\u003e\u4e45\u304c\u539f\u99c5\u003c/div\u003e",
+  "html": "\u003cdiv style=\"font-size: 12px; color: green; writing-mode: horizontal-tb;\"\u003e\u4e45\u304c\u539f\u99c5\u003c/div\u003e",
   "className": "empty",
 });
         
@@ -594,10 +666,10 @@
             var icon_7141b4c776572e20d58ac54b250f1425 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "train",
+  "iconColor": "black",
+  "icon": "smile",
   "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
+  "extraClasses": "fa-rotate-0 smile-hover",
 }
             );
         
@@ -608,7 +680,12 @@
 
         
             
-                var html_ce1758c3a364bc05aa15222987f8ef41 = $(`<div id="html_ce1758c3a364bc05aa15222987f8ef41" style="width: 100.0%; height: 100.0%;">     <b>等々力駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約31分_虎ノ門ヒルズ</td></tr>         <tr><td>自然の豊かさ</td><td>等々力渓谷</td></tr>         <tr><td>静かさ／人口密集度</td><td>（未記入）</td></tr>         <tr><td>1LDK賃料相場</td><td>（未記入）</td></tr>         <tr><td>貸農園の有無</td><td>（未記入）</td></tr>     </table>     </div>`)[0];
+                var html_ce1758c3a364bc05aa15222987f8ef41 = $(`<div id="html_ce1758c3a364bc05aa15222987f8ef41" style="width: 100.0%; height: 100.0%;">     <b>等々力駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約31分_虎ノ門ヒルズ</td></tr>         <tr><td>自然の豊かさ</td><td>等々力渓谷</td></tr>         <tr><td>静かさ／人口密集度</td><td>（未記入）</td></tr>         <tr><td>1LDK賃料相場</td><td>（未記入）</td></tr>         <tr><td>貸農園の有無</td><td>（未記入）</td></tr>     </table>  <div>
+                    <label>メモ:</label>
+                    <textarea id="userInput_1" rows="2" cols="40" placeholder="ここにメモれるぜい"></textarea>
+                    <br>
+                    <button onclick="alert(document.getElementById('userInput_1').value)">保存するかい？</button>
+                    </div>    </div>`)[0];
                 popup_999442921d17ecc3ba5e505456ef73ed.setContent(html_ce1758c3a364bc05aa15222987f8ef41);
             
         
@@ -630,7 +707,7 @@
         
     
             var div_icon_de5b01f1e9c85a61324c442aa17fc768 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size: 12px; color: white; text-shadow: 1px 1px 2px black;\"\u003e\u7b49\u3005\u529b\u99c5\u003c/div\u003e",
+  "html": "\u003cdiv style=\"font-size: 12px; color: green; writing-mode: horizontal-tb;\"\u003e\u7b49\u3005\u529b\u99c5\u003c/div\u003e",
   "className": "empty",
 });
         
@@ -648,10 +725,10 @@
             var icon_0775197c3ca0efb7e58676b85e851db1 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "blue",
-  "iconColor": "white",
-  "icon": "train",
+  "iconColor": "black",
+  "icon": "smile",
   "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
+  "extraClasses": "fa-rotate-0 smile-hover",
 }
             );
         
@@ -662,7 +739,12 @@
 
         
             
-                var html_7d478b095cc877605ea55d70ccc3fd49 = $(`<div id="html_7d478b095cc877605ea55d70ccc3fd49" style="width: 100.0%; height: 100.0%;">     <b>本八幡駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約27分_新橋</td></tr>         <tr><td>自然の豊かさ</td><td>（未記入）</td></tr>         <tr><td>静かさ／人口密集度</td><td>（未記入）</td></tr>         <tr><td>1LDK賃料相場</td><td>（未記入）</td></tr>         <tr><td>貸農園の有無</td><td>（未記入）</td></tr>     </table>     </div>`)[0];
+                var html_7d478b095cc877605ea55d70ccc3fd49 = $(`<div id="html_7d478b095cc877605ea55d70ccc3fd49" style="width: 100.0%; height: 100.0%;">     <b>本八幡駅</b><br>     <table style="font-size:12px;">         <tr><td>新橋駅まで最短所要時間</td><td>約27分_新橋</td></tr>         <tr><td>自然の豊かさ</td><td>（未記入）</td></tr>         <tr><td>静かさ／人口密集度</td><td>（未記入）</td></tr>         <tr><td>1LDK賃料相場</td><td>（未記入）</td></tr>         <tr><td>貸農園の有無</td><td>（未記入）</td></tr>     </table>  <div>
+                    <label>メモ:</label>
+                    <textarea id="userInput_1" rows="2" cols="40" placeholder="ここにメモれるぜい"></textarea>
+                    <br>
+                    <button onclick="alert(document.getElementById('userInput_1').value)">保存するかい？</button>
+                    </div>    </div>`)[0];
                 popup_e767552e5747620cb20b640abc9cba89.setContent(html_7d478b095cc877605ea55d70ccc3fd49);
             
         
@@ -684,12 +766,13 @@
         
     
             var div_icon_6210ac8b532eec174e101801792761b6 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size: 12px; color: white; text-shadow: 1px 1px 2px black;\"\u003e\u672c\u516b\u5e61\u99c5\u003c/div\u003e",
+  "html": "\u003cdiv style=\"font-size: 12px; color: green; writing-mode: horizontal-tb;\"\u003e\u672c\u516b\u5e61\u99c5\u003c/div\u003e",
   "className": "empty",
 });
         
-    
+
                 marker_53fe9d6f9ff087f4270be63478ace948.setIcon(div_icon_6210ac8b532eec174e101801792761b6);
-            
+
+
 </script>
 </html>
